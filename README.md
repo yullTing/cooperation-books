@@ -1,6 +1,5 @@
 # cooperation-books
-<u>first commit</u>
-1、main 分支是默认的。
+1、main 是默认的分支，无法删除。
 
 2、1/2的图书管理系统已经提交到 main 分支上了
 
