@@ -26,14 +26,14 @@
 
 第三步，右击该文件夹并选择 Git Bash Here 。
 
-第四步，在弹出的窗口输入 git init 并回车，将该文件夹变成 Git 可管理的仓库。
+第四步，在弹出的窗口输入<code> git init </code>并回车，将该文件夹变成 Git 可管理的仓库。
 
-第五步，输入 git remote add test git@github.com:xxxx/javaCore.git 并回车，这条指令用来将刚刚新建的文件夹和远程仓库相关联，其中 test 是给远程仓库的命名，而git@github.com:xxxx/javaCore.git 是远程仓库的url地址。
+第五步，输入<code> git remote add test git@github.com:xxxx/javaCore.git </code>并回车，这条指令用来将刚刚新建的文件夹和远程仓库相关联，其中 test 是给远程仓库的命名，而git@github.com:xxxx/javaCore.git 是远程仓库的url地址。
 
-第六步，接着输入 git add . 并回车（注意 add 后面是空格+ .），该指令目的是把新建文件夹下（newFile）的所有文件暂存到仓库。
+第六步，接着输入<code> git add . </code>并回车（注意 add 后面是空格+ .），该指令目的是把新建文件夹下（newFile）的所有文件暂存到仓库。
 
-第七步，输入 git commit -m "日志" 并回车，双引号中的“日志”可以随意更改，比如“第一次提交”等。
+第七步，输入<code> git commit -m "日志" </code>并回车，双引号中的“日志”可以随意更改，比如“第一次提交”等。
 
-第八步，输入 git push -u test master，将暂存到仓库的所有文件提交到远程仓库（前面命名为test）中的 master 分支上。（如果不是第一次提交，可以不用输入 -u）上传的时间可能稍长，请耐心等待。
+第八步，输入<code> git push -u test master </code>，将暂存到仓库的所有文件提交到远程仓库（前面命名为test）中的 master 分支上。（如果不是第一次提交，可以不用输入 -u）上传的时间可能稍长，请耐心等待。
 
 </h6>
