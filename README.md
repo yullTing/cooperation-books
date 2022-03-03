@@ -7,18 +7,18 @@
 
 - 3.1、在本地电脑上，新建并重命名一个文件夹，选中该文件夹右击，选择 Git Bash Here 
 
-- 3.2、在弹出窗口输入 git clone git@github.com:yullTing/cooperation-books.git ，然后回车
+- 3.2、在弹出窗口输入<code> git clone git@github.com:yullTing/cooperation-books.git </code>，然后回车
 
 - 3.3、该命令是下载默认分支中的项目。下载需要时间，完成后请在文件夹中查看。
 
-4、如果要下载指定分支（如分支 master ）的项目，可以输入如下指令：git clone -b master git@github.com:yullTing/cooperation-books.git
+4、如果要下载指定分支（如分支 master ）的项目，可以输入如下指令：<code>git clone -b master git@github.com:yullTing/cooperation-books.git</code>
 
 
 
 
 ### 如果要上传文件夹到 Github，以下是参考步骤
 #### 另可参考教程：https://felixwang.site/archives/gitsynchronize
-
+<h6>
 第一步，新建并重命名文件夹（如newFile）。
 
 第二步，将需要上传的文件夹（或者文件）放在新建的文件夹（newFile）中。
@@ -34,3 +34,5 @@
 第七步，输入 git commit -m "日志" 并回车，双引号中的“日志”可以随意更改，比如“第一次提交”等。
 
 第八步，输入 git push -u test master，将暂存到仓库的所有文件提交到远程仓库（前面命名为test）中的 master 分支上。（如果不是第一次提交，可以不用输入 -u）上传的时间可能稍长，请耐心等待。
+
+</h6>
