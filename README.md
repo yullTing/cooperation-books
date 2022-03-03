@@ -14,8 +14,10 @@
 4、如果要下载指定分支（如分支 master ）的项目，可以输入如下指令：git clone -b master git@github.com:yullTing/cooperation-books.git
 
 
-### 如果要上传文件夹到 Github
-#### 参考教程：https://felixwang.site/archives/gitsynchronize
+
+
+### 如果要上传文件夹到 Github，以下是参考步骤
+#### 另可参考教程：https://felixwang.site/archives/gitsynchronize
 
 第一步，新建并重命名文件夹（如newFile）。
 
