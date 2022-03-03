@@ -19,6 +19,7 @@
 ### 如果要上传文件夹到 Github，以下是参考步骤
 #### 另可参考教程：https://felixwang.site/archives/gitsynchronize
 <h6>
+  
 第一步，新建并重命名文件夹（如newFile）。
 
 第二步，将需要上传的文件夹（或者文件）放在新建的文件夹（newFile）中。
