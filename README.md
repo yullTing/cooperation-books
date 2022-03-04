@@ -7,7 +7,7 @@
 
 - 3.1、在本地电脑上，新建并重命名一个文件夹，选中该文件夹右击，选择 Git Bash Here 
 
-- 3.2、在弹出窗口输入<code> git clone git@github.com:yullTing/cooperation-books.git </code>，然后回车
+- 3.2、在弹出窗口输入<code> git clone https://github.com/yullTing/cooperation-books </code>，然后回车
 
 - 3.3、该命令是下载默认分支中的项目。下载需要时间，完成后请在文件夹中查看。
 
