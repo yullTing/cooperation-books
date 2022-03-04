@@ -37,8 +37,6 @@
   第七步，输入<code> git commit -m "日志" </code>并回车，双引号中的“日志”可以随意更改，比如“第一次提交”等。
 
   第八步，输入<code> git push -u test master </code>，将暂存到仓库的所有文件提交到远程仓库（前面命名为test）中的 master 分支上。（如果不是第一次提交，可以不用输入 -u）上传的时间可能稍长，请耐心等待。
-
   </h6>
-
   </pre>
 </details>
