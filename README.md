@@ -38,5 +38,7 @@
 
   第八步，输入<code> git push -u test master </code>，将暂存到仓库的所有文件提交到远程仓库（前面命名为test）中的 master 分支上。（如果不是第一次提交，可以不用输入 -u）上传的时间可能稍长，请耐心等待。
   </h6>
+  ![image](https://user-images.githubusercontent.com/96578240/156734439-e6344425-bedb-4e27-8ed9-b485f78afd64.png)
+  ![image](https://user-images.githubusercontent.com/96578240/156734789-17291267-37f6-4e93-8ffe-bc69a93c17b1.png)
   </pre>
 </details>
