@@ -27,13 +27,8 @@ public class readerService {
                 System.out.println("存在该数据！请重新输入！");
                 break;
             } else {
-                System.out.println("读者类型编号有：");
-                String sql1 = "select id,typename from readertype";
-                List<readerType> readerTypes = CURRENCY.getForList(readerType.class, sql1);
-                System.out.println("读者类型编号\t\t" + "读者类型名称");
-                for (readerType rt : readerTypes){
-                    System.out.println(rt.getId() + rt.getTypename());
-                }
+                System.out.println("读者类型有：");
+                ReaderCategoryService.ShowReaderTypeIdName();
 
                 System.out.println("请选择上述的读者类型编号进行添加:");
                 int type = TSUtility.readInt();
@@ -55,6 +50,7 @@ public class readerService {
                 Date date = DateUtils.stringToDate(regdate, "yyyy-MM-dd");
                 String sql2 = "insert into `readerinformation` values (?,?,?,?,?,?,?,?)";
                 CURRENCY.update(sql2, number, type, name, age, sex, phone, dept, date);
+                System.out.println("读者信息添加成功！");
                 LogService.AddOperLog("操作员[" + s + "]添加读者（编号" + number + "）" + name);
                 flag = false;
             }
@@ -77,7 +73,7 @@ public class readerService {
                     System.out.println("不存在该数据！请重新输入！");
                     flag = false;
                 } else {
-                    System.out.println("你要查询的读者的信息为:" + instance);
+                    System.out.println("你要查询的读者的信息为:\n" + instance);
                     flag = false;
                 }
             }
@@ -96,7 +92,7 @@ public class readerService {
                 System.out.println("不存在该数据！请重新输入！");
                 break;
             } else {
-                ReaderCategoryService.AllReaderType();
+                ReaderCategoryService.ShowReaderTypeIdName();
                 System.out.println("请输入你要修改的读者类型编号（" + instance.getType() + "）:");
                 String t = TSUtility.readString(2, String.valueOf(instance.getType()));
                 int type = Integer.parseInt(t);
@@ -129,6 +125,7 @@ public class readerService {
 
                 String sql1 = "update `readerinformation` set `type`=?,`name`=?,`age`=?,`sex`=?,`phone`=?,`dept`=?,`regdate`=? where readerid = ?";
                 CURRENCY.update(sql1, type, name, age, sex, phone, dept, date1, number);
+                System.out.println("读者信息修改成功！");
                 LogService.AddOperLog("操作员[" + s + "]修改读者（编号" + number + "）" + name);
                 flag = false;
             }
@@ -152,6 +149,7 @@ public class readerService {
                 } else {
                     String sql2 = "delete from readerinformation where readerid=?";
                     CURRENCY.update(sql2, number);
+                    System.out.println("读者信息删除成功！");
                     LogService.AddOperLog("操作员[" + s + "]删除读者" + number);
                     flag = false;
                 }

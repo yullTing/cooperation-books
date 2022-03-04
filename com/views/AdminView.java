@@ -25,16 +25,16 @@ public class AdminView {
             char cAVI = InputLimit.InputMenuFive();
             switch (cAVI) {
                 case '1':
-                    LogService.ShowOperLog();
+                    LogService.ShowOperLog(s);
                     break;
                 case '2':
-                    BorrowMoneyView();
+                    BorrowMoneyView(s);
                     break;
                 case '3':
                     OperManageView(s);
                     break;
                 case '4':
-                    PenalPillService.QueryPenalPill();
+                    PenalPillService.QueryPenalPill(s);
                     break;
                 case '5':
                     InputLimit.BlueFont("********************************");
@@ -51,7 +51,7 @@ public class AdminView {
 
     //2. 图书借阅金额设定
     //说明：图书的借阅金额应该根据读者类型确定
-    public static void BorrowMoneyView(){
+    public static void BorrowMoneyView(String s){
         InputLimit.BlueFont("********************************");
         List<readerType> readertypes = BorrowMoneyService.QueryBorrowMoney();
         if (readertypes!=null){
@@ -59,6 +59,7 @@ public class AdminView {
             char ynBMV = InputLimit.InputChoice();
             if (ynBMV == 'Y') {
                 BorrowMoneyService.UpdateBorrowMoney(readertypes);
+                LogService.AddOperLog("管理员[" + s + "]修改图书借阅金额的设定");
             }
         }else {
             InputLimit.Warn("请先设置读者类型后再设置图书借阅金额！");
@@ -112,7 +113,7 @@ public class AdminView {
                                     if (admininfo==null){
                                         InputLimit.Warn("管理员Id输入错误！");
                                     } else {
-                                        OperManageService.UpdateOper(id, operNamee, operPwdd, adminId);
+                                        OperManageService.UpdateOper(id, operNamee, operPwdd, adminId, s);
                                         break;
                                     }
                                 }
@@ -132,11 +133,12 @@ public class AdminView {
                         Operinfo operinfo = OperManageService.QueryOperById(idDelete);
                         if (operinfo != null) {
                             InputLimit.BlueFont(operinfo.toString());
+                            String delOperName = operinfo.getOperName();
                             InputLimit.Warn("请确认是否删除该操作员？（Y/N）");
                             char ynDO = InputLimit.InputChoice();
                             if (ynDO == 'Y') {
                                 //确定删除
-                                OperManageService.DeleteOper(idDelete);
+                                OperManageService.DeleteOper(idDelete, delOperName, s);
                             }
                         } else {
                             InputLimit.Warn("编号输入错误！");

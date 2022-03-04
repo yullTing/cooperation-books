@@ -18,10 +18,11 @@ public class ReaderCategoryService {
     }*/
     private static Scanner sc = new Scanner(System.in);
     public static void see() {
-        String sql = "select typename from `readertype` ";
+        String sql = "select * from `readertype` ";
         List<readerType> readerTypeList = CURRENCY.getForList(readerType.class, sql);
-        for(int i=0;i<readerTypeList.size();i++){
-            System.out.println(readerTypeList.get(i).getTypename());
+        System.out.println("读者类别编号" + "\t\t类别名称" + "\t\t最多可借阅图书数量" + "\t\t最大可借阅天数");
+        for (readerType list : readerTypeList){
+            System.out.println(" " + list.getId() + "\t\t" + list.getTypename() + "\t\t" + list.getMaxborrownum() + "\t\t" + list.getLimit());
         }
     }
 
@@ -70,7 +71,7 @@ public class ReaderCategoryService {
             int readInt = TSUtility.readInt();
             boolean check = CheckDuplicate1(readInt);
             if (check == false) {
-                System.out.println("请输入你要将读者编号为"+readInt+"的读者类型名称修改为:");
+                System.out.println("请输入新的读者类型名称:");
                 String type = TSUtility.readKeyBoard(20, false);
                 String sql1 = "update readertype set typename=? where id=?";
                 CURRENCY.update(sql1, type,readInt);
@@ -86,7 +87,7 @@ public class ReaderCategoryService {
     }
     public static boolean CheckDuplicate(String b){
         boolean flag=true;
-        String sql = "select typename from `readertype` ";
+        String sql = "select * from `readertype` ";
         List<readerType> readerTypeList = CURRENCY.getForList(readerType.class, sql);
         for(int i=0;i<readerTypeList.size();i++){
             if (readerTypeList.get(i).getTypename().equals(b)){
@@ -98,7 +99,7 @@ public class ReaderCategoryService {
 
     public static boolean CheckDuplicate1(int i){
         boolean flag=true;
-        String sql = "select id from `readertype` ";
+        String sql = "select * from `readertype` ";
         List<readerType> readerTypeList = CURRENCY.getForList(readerType.class, sql);
         for(int j=0;j<readerTypeList.size();j++){
             if (readerTypeList.get(j).getId()==i){
@@ -116,5 +117,15 @@ public class ReaderCategoryService {
         }*/
         System.out.println("读者类型编号\t\t" + "读者类型");
         readerTypes.forEach(System.out::println);
+    }
+
+    //查询读者类型，仅显示类型编号、类型名称
+    public static void ShowReaderTypeIdName(){
+        String sql1 = "select id,typename from readertype";
+        List<readerType> readerTypes = CURRENCY.getForList(readerType.class, sql1);
+        System.out.println("读者类型编号\t\t" + "读者类型名称");
+        for (readerType rt : readerTypes){
+            System.out.println(rt.getId() + "\t\t " + rt.getTypename());
+        }
     }
 }

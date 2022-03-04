@@ -151,7 +151,7 @@ public class BorrowingService {
         if (readerList.size() == 0) {
             System.out.println("该读者没有借阅书籍！");
         } else {
-            seeISBN();
+            seeISBN1(number);
             boolean flag = true;
             while (flag) {
                 System.out.println("请输入你要归还图书ISBN:");
@@ -171,30 +171,30 @@ public class BorrowingService {
                     }
                     if (flag1 == false) {
                         Date d = new Date();
-                        String sql1 = "insert into `borrowbook` set returndate=?";
-                        CURRENCY.update(sql1, d);
+                        String sql1 = "update `borrowbook` set returndate=? where ISBN=? AND returndate IS NULL";
+                        CURRENCY.update(sql1, d, isbn);
                         String sql2 = "select `type` from `readerinformation` where `readerid`=?";
                         reader instance = CURRENCY.getInstance(reader.class, sql2, number);
-                        String sql3 = "select maxborrownum,`limit` from readertype where id = ?";
+                        String sql3 = "select * from readertype where id = ?";
                         readerType readerType = CURRENCY.getInstance(readerType.class, sql3, instance.getType());
-                        int maxday = readerType.getMaxborrownum();
+                        int maxday = readerType.getLimit();
                         int dayDiffer = DateUtils.getDayDiffer(borrowdate, d);
                         if (dayDiffer <= maxday) {
                             System.out.println("未逾期！");
                             double money = 0;
-                            String sql4 = "insert into borrowbook set fine=?";
-                            CURRENCY.update(sql4, money);
+                            String sql4 = "update `borrowbook` set fine=?  where ISBN=?";
+                            CURRENCY.update(sql4, money, isbn);
                             System.out.println("归还操作执行成功！");
                             LogService.AddOperLog("读者编号（" + number + "）归还图书isbn（" + isbn + "）,操作员[" + s + "]");
                         } else {
-                            String sql4 = "select fine from readertype where id = ?";
-                            readerType instance1 = CURRENCY.getInstance(readerType.class, sql4, instance.getType());
+                            /*String sql4 = "select fine from readertype where id = ?";
+                            readerType instance1 = CURRENCY.getInstance(readerType.class, sql4, instance.getType());*/
                             int i = dayDiffer - maxday;
-                            double money = instance1.getPenalMoney() * i;
-                            String sql5 = "insert into borrowbook set fine=?";
-                            CURRENCY.update(sql5, money);
+                            double money = readerType.getPenalMoney() * i;
+                            String sql5 = "update `borrowbook` set fine=? where ISBN=?";
+                            CURRENCY.update(sql5, money, isbn);
                             System.out.println("归还操作执行成功！");
-                            System.out.println("逾期" + i + "天，共交：" + money + "钱。");
+                            System.out.println("逾期" + i + "天，共交：" + money + "元。");
                             LogService.AddOperLog("读者编号（" + number + "）归还图书isbn（" + isbn + "）,操作员[" + s + "]");
                         }
                     }
@@ -212,6 +212,14 @@ public class BorrowingService {
         System.out.println("图书名称\t\t" + "ISBN");
         for (book bl : bookList) {
             System.out.println(bl.getBookname() + " \t\t" + bl.getISBN());
+        }
+    }
+
+    private static void seeISBN1(String number) {
+        String sql = "select readerid,ISBN from `borrowbook` where readerid = ? ";
+        List<BorrowBook> borrowBookList = CURRENCY.getForList(BorrowBook.class, sql, number);
+        for (int i=0;i<borrowBookList.size();i++){
+            System.out.println("读者编号:"+borrowBookList.get(i).getReaderid()+" ISBN:"+borrowBookList.get(i).getISBN());
         }
     }
 
