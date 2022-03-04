@@ -42,5 +42,10 @@
 </details>
 
   ![image](https://user-images.githubusercontent.com/96578240/156734439-e6344425-bedb-4e27-8ed9-b485f78afd64.png)
+<<<<<<< HEAD
 
   ![image](https://user-images.githubusercontent.com/96578240/156734789-17291267-37f6-4e93-8ffe-bc69a93c17b1.png)
+=======
+  
+  ![image](https://user-images.githubusercontent.com/96578240/156734789-17291267-37f6-4e93-8ffe-bc69a93c17b1.png)
+>>>>>>> ed0d2da023e0b75a9ed557010c3728fee9724a18
