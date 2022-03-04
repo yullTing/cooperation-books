@@ -11,7 +11,7 @@
 
 - 3.3、该命令是下载默认分支中的项目。下载需要时间，完成后请在文件夹中查看。
 
-4、如果要下载指定分支（如分支 master ）的项目，可以输入如下指令：<code>git clone -b master git@github.com:yullTing/cooperation-books.git</code>
+4、如果要下载指定分支（如分支 master ）的项目，可以输入如下指令：<code> git clone -b master https://github.com/yullTing/cooperation-books </code>
 
 
 
