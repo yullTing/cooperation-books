@@ -1,82 +1,88 @@
 package com.service;
 
-import com.entity.Admininfo;
-import com.entity.Operinfo;
+import com.dao.OperManageDAO;
+import com.entity.AdminInfo;
+import com.entity.OperInfo;
 import com.utils.InputLimit;
-import com.utils.JDBCUtils;
 
 import java.util.ArrayList;
 
+/*
+ * 员工信息管理
+ * */
 public class OperManageService {
-    /*
-     * 员工信息管理
-     * */
-    //操作员信息添加
-    public static void AddOper(String s1, String s2, String s3) {
-        String sql = "SELECT * FROM operinfo WHERE operName = ?";
-        Operinfo operinfo = JDBCUtils.QuerySingle(Operinfo.class, sql, s1);
-        if (operinfo == null) {
-            //获取管理员ID
-            String sql2 = "SELECT adminId FROM admininfo WHERE adminName = ?";
-            Admininfo admininfo = JDBCUtils.QuerySingle(Admininfo.class, sql2, s3);
-            int adminId = admininfo.getAdminId();
-            //添加操作员
-            String sql3 = "INSERT INTO operinfo VALUES(null,?,?,?)";
-            int i = JDBCUtils.ExecuteData(sql3, s1, s2, adminId);
-            if (i > 0) {
-                InputLimit.Notice("操作员添加成功！");
-                LogService.AddOperLog("管理员[" + s3 + "]添加操作员信息[" + s1 + "]");
-            } else {
-                InputLimit.Warn("操作员添加失败！");
+
+    private final OperManageDAO daoOperManage = new OperManageDAO();
+
+    public void AddOperService(String s) {
+        InputLimit.BlueFont("请输入员工名称：");
+        String operName = InputLimit.InputString();
+        InputLimit.BlueFont("请输入登录密码：");
+        String operPwd = InputLimit.InputString();
+        /*System.out.println("请确认登录密码：");
+        String surePwd = InputLimit.InputString();*/
+        daoOperManage.AddOper(operName, operPwd, s);
+    }
+
+    public void QueryOperService() {
+        daoOperManage.QueryOper();
+    }
+
+    public void UpdateOperService(String s) {
+        ArrayList<OperInfo> operinfos = daoOperManage.QueryOper();
+        if (operinfos!=null) {//存在操作员信息
+            for (; ;) {//该循环用来确保输入的编号正确且存在
+                InputLimit.BlueFont("请输入列表左侧的编号：");
+                int id = InputLimit.InputNumber();
+                OperInfo operinfo = daoOperManage.QueryOperById(id);
+                if (operinfo == null) {
+                    InputLimit.Warn("编号输入错误！");
+                } else {
+                    InputLimit.BlueFont("修改员工名称（" + operinfo.getOperName() + "）：");
+                    String operNamee = InputLimit.ModifyString(operinfo.getOperName());
+                    InputLimit.BlueFont("修改员工密码(******)：");
+                    String operPwdd = InputLimit.ModifyString(operinfo.getOperPwd());
+
+                    new UserInfoService().QueryAllAdmin(); //查询所有管理员
+                    for (; ;) {//该循环用来确保输入的管理员Id正确且存在
+                        InputLimit.BlueFont("修改所属管理员Id（" + operinfo.getAdminId() + "）：");
+                        int adminId = InputLimit.ModifyInt(operinfo.getAdminId());
+
+                        AdminInfo admininfo = new UserInfoService().QueryAdminById(adminId);
+                        if (admininfo==null){
+                            InputLimit.Warn("管理员Id输入错误！");
+                        } else {
+                            daoOperManage.UpdateOper(id, operNamee, operPwdd, adminId, s);
+                            break;
+                        }
+                    }
+                }
+                break;
             }
-        } else {
-            InputLimit.Warn("该操作员已存在，请勿重复添加！");
         }
     }
 
-    //操作员信息查询
-    public static ArrayList<Operinfo> QueryOper() {
-        ArrayList<Operinfo> operinfos = null;
-        String sql = "SELECT * FROM operinfo";
-        operinfos = JDBCUtils.QueryMultiple(Operinfo.class, sql);
-        if (operinfos != null) {
-            operinfos.forEach(System.out::println);
+    public void DeleteOperService(String s){
+        ArrayList<OperInfo> operinfos1 = daoOperManage.QueryOper();
+        if (operinfos1 == null) {
+            InputLimit.Warn("目前没有任何操作员信息，无法进行删除操作！");
         } else {
-            InputLimit.Warn("无任何操作员信息！");
+            InputLimit.BlueFont("请输入列表左侧的编号：");
+            int idDelete = InputLimit.InputNumber();
+            //查询该编号下是否存在操作员信息
+            OperInfo operinfo = daoOperManage.QueryOperById(idDelete);
+            if (operinfo != null) {
+                InputLimit.BlueFont(operinfo.toString());
+                String delOperName = operinfo.getOperName();
+                InputLimit.Warn("请确认是否删除该操作员？（Y/N）");
+                char ynDO = InputLimit.InputChoice();
+                if (ynDO == 'Y') {
+                    //确定删除
+                    daoOperManage.DeleteOper(idDelete, delOperName, s);
+                }
+            } else {
+                InputLimit.Warn("操作员编号输入错误！");
+            }
         }
-        return operinfos;
-    }
-
-    //操作员信息修改
-    public static void UpdateOper(int i1, String s1, String s2, int i2, String s) {
-        String sql = "UPDATE operinfo SET operName = ?, operPwd = ?, adminId = ? WHERE operId = ?";
-        int i = JDBCUtils.ExecuteData(sql, s1, s2, i2, i1);
-        if (i < 0) {
-            InputLimit.Warn("操作员信息修改失败！");
-        } else {
-            InputLimit.Notice("操作员信息修改成功！");
-            LogService.AddOperLog("管理员[" + s + "]修改操作员信息[" + s1 + "]");
-        }
-    }
-
-    //操作员信息删除
-    public static void DeleteOper(int i, String s1, String s) {
-        String sql = "DELETE FROM operinfo WHERE operId = ?";
-        int i1 = JDBCUtils.ExecuteData(sql, i);
-        if (i1 > 0) {
-            InputLimit.Notice("该操作员信息删除成功！");
-            LogService.AddOperLog("管理员[" + s + "]添加操作员信息[" + s1 + "]");
-        } else {
-            InputLimit.Warn("该操作员信息删除失败！");
-        }
-    }
-
-    //精确查询：根据此时员工列表的编号查询员工信息
-    public static Operinfo QueryOperById(int i) {
-        Operinfo operinfo = null;
-        String sql = "SELECT * FROM operinfo where operId = ?";
-        operinfo = JDBCUtils.QuerySingle(Operinfo.class, sql, i);
-
-        return operinfo;
     }
 }

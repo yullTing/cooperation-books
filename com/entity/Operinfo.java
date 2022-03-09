@@ -1,18 +1,15 @@
 package com.entity;
 
-/*
-* 操作员信息
-* */
-public class Operinfo {
+public class OperInfo {
     private int operId; // 操作员用户编号（主键）
     private String operName; // 操作员用户名称
     private String operPwd; // 操作员用户名
     private int adminId; // 管理员ID
 
-    public Operinfo() {
+    public OperInfo() {
     }
 
-    public Operinfo(int operId, String operName, String operPwd, int adminId) {
+    public OperInfo(int operId, String operName, String operPwd, int adminId) {
         this.operId = operId;
         this.operName = operName;
         this.operPwd = operPwd;
@@ -53,6 +50,6 @@ public class Operinfo {
 
     @Override
     public String toString() {
-        return operId + "\t\t" + operName + "\t\t" + adminId;//+ "\t\t" + operPwd + "\t\t" + adminId;
+        return operId + "\t\t" + operName + "\t\t" + adminId;
     }
 }

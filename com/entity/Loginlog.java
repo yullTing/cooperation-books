@@ -3,15 +3,15 @@ package com.entity;
 /*
 * 登录日志
 * */
-public class Loginlog {
+public class LoginLog {
     private int llogId; // 登录日志 编号（主键）
     private String llogTime; // 登录日志 时间
     private String llogDetails; // 登录日志 内容：管理员/操作员【xxx】登录系统
 
-    public Loginlog() {
+    public LoginLog() {
     }
 
-    public Loginlog(int llogId, String llogTime, String llogDetails) {
+    public LoginLog(int llogId, String llogTime, String llogDetails) {
         this.llogId = llogId;
         this.llogTime = llogTime;
         this.llogDetails = llogDetails;

@@ -1,17 +1,17 @@
 package com.entity;
 
 /*
-* 管理员信息
+* 操作员信息
 * */
-public class Admininfo {
-    private int adminId; // 管理员用户编号（主键）
-    private String adminName; // 管理员用户名称
-    private String adminPwd; // 管理员用户密码
+public class AdminInfo {
+    private int adminId; // 管理员ID
+    private String adminName; // 管理员名称
+    private String adminPwd; // 管理员密码
 
-    public Admininfo() {
+    public AdminInfo() {
     }
 
-    public Admininfo(int adminId, String adminName, String adminPwd) {
+    public AdminInfo(int adminId, String adminName, String adminPwd) {
         this.adminId = adminId;
         this.adminName = adminName;
         this.adminPwd = adminPwd;
@@ -43,6 +43,6 @@ public class Admininfo {
 
     @Override
     public String toString() {
-        return adminId + "\t" + adminName;// + "\t\t" + adminPwd;
+        return adminId + "\t\t" + adminName;//+ "\t\t" + operPwd + "\t\t" + adminId;
     }
 }
