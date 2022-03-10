@@ -5,6 +5,8 @@ import com.dao.ReaderInfoDAO;
 import com.dao.ReaderTypeDAO;
 import com.entity.BorrowReturn;
 import com.entity.ReaderInfo;
+import com.implement.BorrowReturnImpl;
+import com.intermediary.Intermediary;
 import com.utils.DateUtils;
 import com.utils.InputLimit;
 import com.utils.TSUtility;
@@ -17,6 +19,9 @@ public class ReaderService {
 
     private final ReaderInfoDAO daoReader = new ReaderInfoDAO();
     private final ReaderTypeDAO daoReaderType = new ReaderTypeDAO();
+    //动态代理
+    BorrowReturnImpl host = new BorrowReturnDAO();
+    BorrowReturnImpl intermediary = (BorrowReturnImpl)new Intermediary(host).getProxyInstance();
 
     public void AddReaderInfo(String s) {
         try {
@@ -162,7 +167,7 @@ public class ReaderService {
                 InputLimit.Warn("不存在该数据！");
             } else {
                 //根据读者Id 查询该读者是否有借阅记录
-                List<BorrowReturn> borrowBooks = new BorrowReturnDAO().whetherBorrowBook(number);
+                List<BorrowReturn> borrowBooks = intermediary.whetherBorrowBook(number);
 
                 if (borrowBooks.size() == 0) {
                     daoReader.DeleteReader(s, number);

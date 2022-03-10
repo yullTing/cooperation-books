@@ -40,9 +40,9 @@ public class ReaderTypeDAO extends BaseDAO<ReaderType> implements ReaderTypeImpl
     }
 
     @Override
-    public void ModifyReaderType(String s, String type, int readInt) {
-        String sql1 = "update readertype set typename=? where id=?";
-        doUpdate(sql1, type, readInt);
+    public void ModifyReaderType(String s, String type, int maxNum, int limit, int readInt) {
+        String sql1 = "update readertype set typename=?,maxborrownum=?,`limit`=? where id=?";
+        doUpdate(sql1, type, maxNum, limit, readInt);
         InputLimit.Notice("修改成功！");
         new LogService().AOL("操作员[" + s + "]修改读者类型" + type);
     }
@@ -119,5 +119,4 @@ public class ReaderTypeDAO extends BaseDAO<ReaderType> implements ReaderTypeImpl
 
         return readerType;
     }
-
 }

@@ -1,6 +1,5 @@
 package com.dao;
 
-import com.implement.BaseImpl;
 import com.utils.InputLimit;
 import com.utils.JDBCUtils;
 import com.mysql.jdbc.Connection;
@@ -19,8 +18,8 @@ import java.util.ArrayList;
 * 封装了针对于数据表的通用的操作
 * 数据的查和增/删/改代码
 * */
-//public abstract class BaseDAO<T> implements BaseImpl<T> {
-public class BaseDAO<T> implements BaseImpl<T> {
+public abstract class BaseDAO<T> {
+//public class BaseDAO<T> implements BaseImpl<T> {
 
     private Class<T> clazz;
     private com.mysql.jdbc.Connection conn;
@@ -44,10 +43,10 @@ public class BaseDAO<T> implements BaseImpl<T> {
         clazz = (Class<T>) typeArguments[0];
     }
 
-    /*
+    /*@Override
     * 通用的查询操作，用于返回数据表中的一条记录（version 2.0：考虑上事务）
     * */
-    @Override
+
     public T doQueryOneData(String sql, Object... args) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -89,14 +88,14 @@ public class BaseDAO<T> implements BaseImpl<T> {
     /*
     * 用于查询特殊值的通用的方法，如查询总行数
     * */
-    /*public <E> E doQuerySpecialValue(String sql){
+    /*public <E> E doQuerySpecialValue(String sql, Object... args){
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
-            *//*for(int i = 0;i < args.length;i++){
+            for(int i = 0;i < args.length;i++){
                 ps.setObject(i + 1, args[i]);
-            }*//*
+            }
             try {
                 rs = ps.executeQuery();
             } catch (MySQLSyntaxErrorException e){
@@ -114,10 +113,10 @@ public class BaseDAO<T> implements BaseImpl<T> {
     }*/
 
 
-    /*
+    /* @Override
     * 通用的查询操作，用于返回数据表中的多条记录构成的集合（version 2.0：考虑上事务）
     * */
-    @Override
+
     public ArrayList<T> doQueryResultList(String sql, Object... args) {//
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -158,10 +157,10 @@ public class BaseDAO<T> implements BaseImpl<T> {
         return null;
     }
 
-    /*
+    /*@Override
     * 通用的增/删/改操作
     * */
-    @Override
+
     public int doUpdate(String sql, Object...args) {
         int iResult = 0;
         PreparedStatement ps = null;

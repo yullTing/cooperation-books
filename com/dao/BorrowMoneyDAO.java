@@ -9,7 +9,7 @@ import java.util.List;
 public class BorrowMoneyDAO extends BaseDAO<ReaderType> implements BorrowMoneyImpl {
     @Override
     public List<ReaderType> QueryBorrowMoney() {
-        List<ReaderType> ReaderTypes = null;
+        List<ReaderType> ReaderTypes;
         String sql = "SELECT typename,borrowMoney FROM readertype";
         ReaderTypes = doQueryResultList(sql);
 

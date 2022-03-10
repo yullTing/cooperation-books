@@ -1,15 +1,15 @@
 package com.entity;
 
-public class OperInfo {
+public class OperatorInfo {
     private int operId; // 操作员用户编号（主键）
     private String operName; // 操作员用户名称
     private String operPwd; // 操作员用户名
     private int adminId; // 管理员ID
 
-    public OperInfo() {
+    public OperatorInfo() {
     }
 
-    public OperInfo(int operId, String operName, String operPwd, int adminId) {
+    public OperatorInfo(int operId, String operName, String operPwd, int adminId) {
         this.operId = operId;
         this.operName = operName;
         this.operPwd = operPwd;

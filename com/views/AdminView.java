@@ -57,16 +57,16 @@ public class AdminView {
             char cOM = InputLimit.InputMenuFive();
             switch (cOM) {
                 case '1':
-                    new OperManageService().AddOperService(s);
+                    new OperatorManageService().AddOperService(s);
                     break;
                 case '2':
-                    new OperManageService().QueryOperService();
+                    new OperatorManageService().QueryOperService();
                     break;
                 case '3':
-                    new OperManageService().UpdateOperService(s);
+                    new OperatorManageService().UpdateOperService(s);
                     break;
                 case '4':
-                   new OperManageService().DeleteOperService(s);
+                   new OperatorManageService().DeleteOperService(s);
                     break;
                 case '5':
                     InputLimit.BlueFont("********************************");

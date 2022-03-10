@@ -10,25 +10,25 @@ import java.util.ArrayList;
 
 public class AdminInfoDAO extends BaseDAO<AdminInfo> implements AdminInfoImpl {
 
-    @Override
-    public void LoginAdmin(String s1, String s2) {
+    /*@Override
+    public void LoginAdmin(String inputName, String inputPwd) {
         String sql = "SELECT * FROM admininfo WHERE adminName = ?";
 
-        AdminInfo admininfo = doQueryOneData(sql, s1);
+        AdminInfo admininfo = doQueryOneData(sql, inputName);
         if (admininfo!=null) {
             String adminPwd = admininfo.getAdminPwd();
-            if (adminPwd.equals(s2)) {
+            if (adminPwd.equals(inputPwd)) {
                 InputLimit.Notice("登录成功!");
                 // 登录日志
-                new LogService().ALL("管理员[" + s1 + "]登录系统");
-                AdminView.AdminViewIndex(s1);
+                new LogService().ALL("管理员[" + inputName + "]登录系统");
+                AdminView.AdminViewIndex(inputName);
             } else {
                 InputLimit.Warn("登录失败，密码输入错误！");
             }
         } else {
             InputLimit.Warn("登录失败，该管理员不存在！");
         }
-    }
+    }*/
 
     @Override
     public void RegisterAdmin(String s1, String s2) {

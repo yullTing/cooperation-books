@@ -1,44 +1,43 @@
 package com.dao;
 
-import com.entity.OperInfo;
-import com.implement.OperManageImpl;
+import com.entity.OperatorInfo;
+import com.implement.OperatorManageImpl;
 import com.service.LogService;
 import com.utils.InputLimit;
-import com.views.OperatorView;
 
 import java.util.ArrayList;
 
-public class OperManageDAO extends BaseDAO<OperInfo> implements OperManageImpl {
-    @Override
-    public void LoginOper(String operName, String operPwd) {
+public class OperatorManageDAO extends BaseDAO<OperatorInfo> implements OperatorManageImpl {
+    /*@Override
+    public void LoginOper(String inputName, String inputPwd) {
         String sql = "SELECT * FROM operinfo WHERE operName = ?";
 
-        OperInfo operinfo = doQueryOneData(sql, operName);
+        OperInfo operinfo = doQueryOneData(sql, inputName);
         if (operinfo!=null) {
-            String adminPwd = operinfo.getOperPwd();
-            if (adminPwd.equals(operPwd)) {
+            String operPwd = operinfo.getOperPwd();
+            if (operPwd.equals(inputPwd)) {
                 InputLimit.Notice("登录成功!");
                 // 登录日志
-                new LogService().ALL("操作员[" + operName + "]登录系统");
+                new LogService().ALL("操作员[" + inputName + "]登录系统");
                 //System.out.println("操作员界面");
 
-                OperatorView.operator(operName);
+                OperatorView.operator(inputName);
             } else {
                 InputLimit.Warn("登录失败，密码输入错误！");
             }
         } else {
             InputLimit.Warn("登录失败，该操作员不存在！");
         }
-    }
+    }*/
 
     @Override
     public void AddOper(String s1, String s2, String s3) {
         String sql = "SELECT * FROM operinfo WHERE operName = ?";
-        OperInfo operinfo = doQueryOneData(sql, s1);
+        OperatorInfo operinfo = doQueryOneData(sql, s1);
         if (operinfo == null) {
             //获取管理员ID
             String sql2 = "SELECT adminId FROM admininfo WHERE adminName = ?";
-            OperInfo admininfo = doQueryOneData(sql2, s3);
+            OperatorInfo admininfo = doQueryOneData(sql2, s3);
             int adminId = admininfo.getAdminId();
             //添加操作员
             String sql3 = "INSERT INTO operinfo VALUES(null,?,?,?)";
@@ -55,8 +54,8 @@ public class OperManageDAO extends BaseDAO<OperInfo> implements OperManageImpl {
     }
 
     @Override
-    public ArrayList<OperInfo> QueryOper() {
-        ArrayList<OperInfo> operinfos;
+    public ArrayList<OperatorInfo> QueryOper() {
+        ArrayList<OperatorInfo> operinfos;
         String sql = "SELECT * FROM operinfo";
         operinfos = doQueryResultList(sql);
         if (operinfos.size() != 0) {
@@ -93,8 +92,8 @@ public class OperManageDAO extends BaseDAO<OperInfo> implements OperManageImpl {
     }
 
     @Override
-    public OperInfo QueryOperById(int i) {
-        OperInfo operinfo;
+    public OperatorInfo QueryOperById(int i) {
+        OperatorInfo operinfo;
         String sql = "SELECT * FROM operinfo where operId = ?";
         operinfo = doQueryOneData(sql, i);
 

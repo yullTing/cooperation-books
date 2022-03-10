@@ -19,7 +19,7 @@ public interface ReaderTypeImpl {
     void DeleteReaderType(String s, String type1);
 
     //修改读者类别
-    void ModifyReaderType(String s, String type, int readInt);
+    void ModifyReaderType(String s, String type, int limit, int maxNum, int readInt);
 
     //检查是否存在该读者类别
     boolean HasBookTypeName(String typeName);
@@ -38,4 +38,5 @@ public interface ReaderTypeImpl {
 
     //根据读者类型编号 查询可借阅的最多图书数量
     ReaderType getRTByReaderTypeId(int typeId);
+
 }

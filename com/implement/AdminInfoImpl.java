@@ -8,7 +8,7 @@ import com.entity.AdminInfo;
 public interface AdminInfoImpl {
 
     //管理员登录
-    void LoginAdmin(String s1, String s2);
+    /*void LoginAdmin(String s1, String s2);*/
 
     //注册管理员
     void RegisterAdmin(String s1, String s2);

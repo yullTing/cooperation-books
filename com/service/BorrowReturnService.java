@@ -4,6 +4,8 @@ import com.dao.*;
 import com.entity.BorrowReturn;
 import com.entity.ReaderInfo;
 import com.entity.ReaderType;
+import com.implement.BorrowReturnImpl;
+import com.intermediary.Intermediary;
 import com.utils.DateUtils;
 import com.utils.InputLimit;
 import com.utils.TSUtility;
@@ -14,15 +16,17 @@ import java.util.List;
 
 public class BorrowReturnService {
 
-    private final BorrowReturnDAO daoBorrowReturn = new BorrowReturnDAO();
-    private final BooksInfoDAO daoBooks = new BooksInfoDAO();
-    private final ReaderInfoDAO daoReader = new ReaderInfoDAO();
+    //private final BorrowReturnDAO daoBorrowReturn = new BorrowReturnDAO();
+
+    BorrowReturnImpl host = new BorrowReturnDAO();
+    BorrowReturnImpl intermediary = (BorrowReturnImpl)new Intermediary(host).getProxyInstance();
+
 
     public void Borrow(String s) {
         System.out.println("请输入读者编号:");
         String number = TSUtility.readKeyBoard(8, false);
 
-        ReaderInfo readerInfo = daoReader.QueryReaderByReaderId(number);
+        ReaderInfo readerInfo = new ReaderInfoDAO().QueryReaderByReaderId(number);
 
         if (readerInfo == null) {
             InputLimit.Warn("编号输入有误，不存在该读者的信息！");
@@ -31,7 +35,8 @@ public class BorrowReturnService {
 
             //检查该读者是否超过图书最大借阅数量
             int alreadyBorrowNum = 0;//已经借阅的图书数量
-            List<BorrowReturn> borrowBooks = daoBorrowReturn.whetherBorrowBook(number);
+
+            List<BorrowReturn> borrowBooks = intermediary.whetherBorrowBook(number);//daoBorrowReturn.whetherBorrowBook(number);
             if (borrowBooks.size() != 0){//该读者有借阅记录
                 for (BorrowReturn list : borrowBooks) {
                     if(list.getReturndate() == null) {
@@ -42,7 +47,7 @@ public class BorrowReturnService {
             }
             if (alreadyBorrowNum == 0){//该读者没有借阅图书
                 //条件都满足后，正式添加借阅信息
-                daoBooks.ShowBooksISBNName();
+                new BooksInfoDAO().ShowBooksISBNName();
                 boolean flag = true;
                 while (flag) {
                     System.out.println("输入你要借阅图书的ISBN:");
@@ -54,7 +59,8 @@ public class BorrowReturnService {
                         double bookPrice = new BooksInfoDAO().getBookPrice(isbn);
 
                         //检查该类读者的图书借阅总金额是否超过设定
-                        double alreadyUserBM = daoBorrowReturn.AlreadyUserBM(number);//已经借阅且未归还图书的总金额
+
+                        double alreadyUserBM = intermediary.AlreadyUserBM(number);//daoBorrowReturn.AlreadyUserBM(number);//已经借阅且未归还图书的总金额
                         double bookPrice2 = bookPrice + alreadyUserBM;
 
                         //该类读者设定的可借阅图书总金额
@@ -64,7 +70,7 @@ public class BorrowReturnService {
                             break;
                         } else {
                             Date d = new Date();
-                            daoBorrowReturn.BorrowBook(s, number, isbn, d);
+                            intermediary.BorrowBook(s, number, isbn, d);//daoBorrowReturn.BorrowBook(s, number, isbn, d);
                             flag = false;
                         }
                     } else {
@@ -81,7 +87,7 @@ public class BorrowReturnService {
                     InputLimit.Warn("该读者最多可借阅图书 " + maxBorrowNum + " 本，请归还后再借！");
                 } else {
                     //条件都满足后，正式添加借阅信息
-                    daoBooks.ShowBooksISBNName();
+                    new BooksInfoDAO().ShowBooksISBNName();
                     boolean flag = true;
                     while (flag) {
                         System.out.println("输入你要借阅图书的ISBN:");
@@ -92,7 +98,7 @@ public class BorrowReturnService {
                             double bookPrice = new BooksInfoDAO().getBookPrice(isbn);
 
                             //检查该类读者的图书借阅总金额是否超过设定
-                            double alreadyUserBM = daoBorrowReturn.AlreadyUserBM(number);//已经借阅且未归还图书的总金额
+                            double alreadyUserBM = intermediary.AlreadyUserBM(number); //daoBorrowReturn.AlreadyUserBM(number);//已经借阅且未归还图书的总金额
                             double bookPrice2 = bookPrice + alreadyUserBM;
 
                             //该类读者设定的可借阅图书总金额
@@ -102,7 +108,7 @@ public class BorrowReturnService {
                                 break;
                             } else {
                                 Date d = new Date();
-                                daoBorrowReturn.BorrowBook(s, number, isbn, d);
+                                intermediary.BorrowBook(s, number, isbn, d);//daoBorrowReturn.BorrowBook(s, number, isbn, d);
                                 flag = false;
                             }
                         } else {
@@ -126,7 +132,7 @@ public class BorrowReturnService {
             if (alreadyReturn) {
                 InputLimit.Warn("该读者任何没有正在借阅的书籍！");
             } else {
-                daoBorrowReturn.ShowReaderIdISBN(number);//查看该读者所有的借阅记录
+                intermediary.ShowReaderIdISBN(number);//daoBorrowReturn.ShowReaderIdISBN(number);//查看该读者所有的借阅记录
                 boolean flag = true;
                 while (flag) {
                     System.out.println("请输入你要归还图书ISBN:");
@@ -134,7 +140,7 @@ public class BorrowReturnService {
                     boolean b = new BooksInfoDAO().HasBookInfoByISBN(isbn); //检查ISBN是否输入正确，是否存在
                     if (b) {
                         //根据读者Id查询借书时间
-                        List<BorrowReturn> borrowReturns = daoBorrowReturn.CheckDuplicate(number);
+                        List<BorrowReturn> borrowReturns = intermediary.CheckDuplicate(number);//daoBorrowReturn.CheckDuplicate(number);
                         boolean flag1 = true;
                         Date borrowdate = null;
                         if (borrowReturns != null) {
@@ -148,7 +154,7 @@ public class BorrowReturnService {
                         if (!flag1) {
                             Date d = new Date();
                             //归还图书：修改还书日期
-                            daoBorrowReturn.ReturnBook(d, isbn);
+                            intermediary.ReturnBook(d, isbn);//daoBorrowReturn.ReturnBook(d, isbn);
                             //根据Id查询读者信息
                             ReaderInfo instance = new ReaderInfoDAO().QueryReaderByReaderId(number);
                             //查询规定可借阅的最多图书数量
@@ -160,12 +166,12 @@ public class BorrowReturnService {
                                 InputLimit.Notice("未逾期！");
                                 double money = 0;
                                 //归还图书：设置罚金
-                                daoBorrowReturn.ModifyFine(s, money, isbn, number);
+                                intermediary.ModifyFine(s, money, isbn, number);//daoBorrowReturn.ModifyFine(s, money, isbn, number);
                             } else {
                                 int i = dayDiffer - maxDay;
                                 double money = readerType.getPenalMoney() * i;
                                 //归还图书：设置罚金
-                                daoBorrowReturn.ModifyFine(s, money, isbn, number);
+                                intermediary.ModifyFine(s, money, isbn, number);//daoBorrowReturn.ModifyFine(s, money, isbn, number);
                                 InputLimit.Warn("逾期" + i + "天，共交：" + money + "元。");
                             }
                         }
@@ -182,7 +188,8 @@ public class BorrowReturnService {
 
     //借阅信息查看
     public void QBorrowReturn() {
-        daoBorrowReturn.QueryBorrowReturn();
+        intermediary.QueryBorrowReturn();
+        //daoBorrowReturn.QueryBorrowReturn();
     }
 
 }
