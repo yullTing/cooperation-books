@@ -37,9 +37,10 @@ public class BorrowReturnDAO extends BaseDAO<BorrowReturn> implements BorrowRetu
     @Override
     public boolean HasBookByISBN(String isbn) {
         boolean result = false;
-        String sql1 = "select * borrowbook` where `ISBN`=?";
+        String sql1 = "select * from borrowbook where `ISBN`= ? ";
         ArrayList<BorrowReturn> instance1 = doQueryResultList(sql1, isbn);
         if (instance1.size() == 0){
+            //这个ISBN不存在时，返回true
             result = true;
         }
 
@@ -95,13 +96,26 @@ public class BorrowReturnDAO extends BaseDAO<BorrowReturn> implements BorrowRetu
         return result;
     }
 
+    //根据读者Id，查询读者正在阅读的图书数量
     @Override
     public List<BorrowReturn> whetherBorrowBook(String number) {
         List<BorrowReturn> forList;
-        String sql = "select * from borrowbook where readerid = ?";
+        String sql = "select * from borrowbook where readerid = ? AND returndate IS NULL";
         forList = doQueryResultList(sql, number);
 
         return forList;
+    }
+
+    @Override
+    public boolean IsThereLibraryRecord(String number) {
+        boolean result = false;
+        String sql = "select * from borrowbook where readerid = ?";
+        List<BorrowReturn> forList = doQueryResultList(sql, number);
+
+        if (forList.size() == 0) {
+            result = true;
+        }
+        return result;
     }
 
     @Override

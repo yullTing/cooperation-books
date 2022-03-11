@@ -2,58 +2,38 @@ package com.dao;
 
 import com.entity.AdminInfo;
 import com.implement.AdminInfoImpl;
-import com.service.LogService;
 import com.utils.InputLimit;
-import com.views.AdminView;
 
 import java.util.ArrayList;
 
 public class AdminInfoDAO extends BaseDAO<AdminInfo> implements AdminInfoImpl {
 
-    /*@Override
-    public void LoginAdmin(String inputName, String inputPwd) {
+    @Override
+    public AdminInfo getAdminInfo(String inputName) {
+        AdminInfo admininfo;
         String sql = "SELECT * FROM admininfo WHERE adminName = ?";
+        admininfo = doQueryOneData(sql, inputName);
 
-        AdminInfo admininfo = doQueryOneData(sql, inputName);
-        if (admininfo!=null) {
-            String adminPwd = admininfo.getAdminPwd();
-            if (adminPwd.equals(inputPwd)) {
-                InputLimit.Notice("登录成功!");
-                // 登录日志
-                new LogService().ALL("管理员[" + inputName + "]登录系统");
-                AdminView.AdminViewIndex(inputName);
-            } else {
-                InputLimit.Warn("登录失败，密码输入错误！");
-            }
-        } else {
-            InputLimit.Warn("登录失败，该管理员不存在！");
-        }
-    }*/
+        return admininfo;
+    }
 
     @Override
-    public void RegisterAdmin(String s1, String s2) {
-        String sql = "SELECT * FROM admininfo WHERE adminName = ?";
-        AdminInfo admininfo = doQueryOneData(sql, s1);
-        if (admininfo==null) {
-
-            String sql2 = "INSERT INTO admininfo VALUES(null,?,?)";
-            int i = doUpdate(sql2, s1, s2);
-            if (i > 0) {
-                InputLimit.Notice("管理员注册成功！");
-            } else {
-                InputLimit.Warn("管理员注册失败！");
-            }
+    public void RegisterAdmin(String inputName, String inputPwd, String inputTel) {
+        String sql = "INSERT INTO admininfo VALUES(null,?,?,?)";
+        int i = doUpdate(sql, inputName, inputPwd, inputTel);
+        if (i > 0) {
+            InputLimit.Notice("管理员注册成功！");
         } else {
-            InputLimit.Warn("该管理员已存在，请勿重复注册！");
+            InputLimit.Warn("管理员注册失败！");
         }
     }
 
     @Override
     public void AllAdmin() {
         String sql = "SELECT * FROM admininfo";
-        ArrayList<AdminInfo> admininfos = doQueryResultList(sql);
+        ArrayList<AdminInfo> adminInfos = doQueryResultList(sql);
 
-        admininfos.forEach(System.out::println);
+        adminInfos.forEach(System.out::println);
     }
 
     @Override
@@ -66,23 +46,13 @@ public class AdminInfoDAO extends BaseDAO<AdminInfo> implements AdminInfoImpl {
     }
 
     @Override
-    public void RetrievePwd(String s1, String s2, String s3) {
-        String sql = "SELECT * FROM admininfo WHERE adminName = ?";
-        AdminInfo admininfo = doQueryOneData(sql, s1);
-        if (admininfo==null){
-            InputLimit.Warn("密码修改失败，该管理员不存在！");
+    public void RetrievePwd(String adminName, String newPwd) {
+        String sql2 = "UPDATE admininfo SET adminPwd = ? WHERE adminName = ?";
+        int i = doUpdate(sql2, newPwd, adminName);
+        if (i > 0){
+            InputLimit.Notice("密码修改成功！");
         } else {
-            if (s2.equals(s3)){
-                String sql2 = "UPDATE admininfo SET adminPwd = ? WHERE adminName = ?";
-                int i = doUpdate(sql2, s2, s1);
-                if (i > 0){
-                    InputLimit.Notice("密码修改成功！");
-                } else {
-                    InputLimit.Warn("密码修改失败！");
-                }
-            } else {
-                InputLimit.Warn("密码修改失败，两次密码输入不一致！");
-            }
+            InputLimit.Warn("密码修改失败！");
         }
     }
 }

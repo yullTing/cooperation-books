@@ -31,20 +31,20 @@ public class OperatorManageDAO extends BaseDAO<OperatorInfo> implements Operator
     }*/
 
     @Override
-    public void AddOper(String s1, String s2, String s3) {
+    public void AddOpera(String operaName, String operaPwd, String adminName) {
         String sql = "SELECT * FROM operinfo WHERE operName = ?";
-        OperatorInfo operinfo = doQueryOneData(sql, s1);
-        if (operinfo == null) {
+        OperatorInfo operaInfo = doQueryOneData(sql, operaName);
+        if (operaInfo == null) {
             //获取管理员ID
             String sql2 = "SELECT adminId FROM admininfo WHERE adminName = ?";
-            OperatorInfo admininfo = doQueryOneData(sql2, s3);
-            int adminId = admininfo.getAdminId();
+            OperatorInfo adminInfo = doQueryOneData(sql2, adminName);
+            int adminId = adminInfo.getAdminId();
             //添加操作员
             String sql3 = "INSERT INTO operinfo VALUES(null,?,?,?)";
-            int i = doUpdate(sql3, s1, s2, adminId);
+            int i = doUpdate(sql3, operaName, operaPwd, adminId);
             if (i > 0) {
                 InputLimit.Notice("操作员添加成功！");
-                new LogService().AOL("管理员[" + s3 + "]添加操作员信息[" + s1 + "]");
+                new LogService().AOL("管理员[" + adminName + "]添加操作员信息[" + operaName + "]");
             } else {
                 InputLimit.Warn("操作员添加失败！");
             }
@@ -54,45 +54,45 @@ public class OperatorManageDAO extends BaseDAO<OperatorInfo> implements Operator
     }
 
     @Override
-    public ArrayList<OperatorInfo> QueryOper() {
-        ArrayList<OperatorInfo> operinfos;
+    public ArrayList<OperatorInfo> QueryOpera() {
+        ArrayList<OperatorInfo> operaInfo;
         String sql = "SELECT * FROM operinfo";
-        operinfos = doQueryResultList(sql);
-        if (operinfos.size() != 0) {
+        operaInfo = doQueryResultList(sql);
+        if (operaInfo.size() != 0) {
             System.out.println("操作员编号\t 操作员姓名\t 归属管理员Id" );
-            operinfos.forEach(System.out::println);
+            operaInfo.forEach(System.out::println);
         } else {
             InputLimit.Warn("无任何操作员信息！");
         }
-        return operinfos;
+        return operaInfo;
     }
 
     @Override
-    public void UpdateOper(int i1, String s1, String s2, int i2, String s) {
+    public void UpdateOpera(int operaId, String operaName, String operaPwd, int adminId, String s) {
         String sql = "UPDATE operinfo SET operName = ?, operPwd = ?, adminId = ? WHERE operId = ?";
-        int i = doUpdate(sql, s1, s2, i2, i1);
+        int i = doUpdate(sql, operaName, operaPwd, adminId, operaId);
         if (i < 0) {
             InputLimit.Warn("操作员信息修改失败！");
         } else {
             InputLimit.Notice("操作员信息修改成功！");
-            new LogService().AOL("管理员[" + s + "]修改操作员信息[" + s1 + "]");
+            new LogService().AOL("管理员[" + s + "]修改操作员信息[" + operaName + "]");
         }
     }
 
     @Override
-    public void DeleteOper(int i, String s1, String s) {
+    public void DeleteOpera(int operaId, String operaName, String s) {
         String sql = "DELETE FROM operinfo WHERE operId = ?";
-        int i1 = doUpdate(sql, i);
+        int i1 = doUpdate(sql, operaId);
         if (i1 > 0) {
             InputLimit.Notice("该操作员信息删除成功！");
-            new LogService().AOL("管理员[" + s + "]添加操作员信息[" + s1 + "]");
+            new LogService().AOL("管理员[" + s + "]添加操作员信息[" + operaName + "]");
         } else {
             InputLimit.Warn("该操作员信息删除失败！");
         }
     }
 
     @Override
-    public OperatorInfo QueryOperById(int i) {
+    public OperatorInfo QueryOperaById(int i) {
         OperatorInfo operinfo;
         String sql = "SELECT * FROM operinfo where operId = ?";
         operinfo = doQueryOneData(sql, i);

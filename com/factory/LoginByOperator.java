@@ -10,13 +10,20 @@ import com.views.OperatorView;
 public class LoginByOperator extends BaseDAO<OperatorInfo> implements Identity {
 
     @Override
-    public void LoginByIdentity(String inputName, String inputPwd) {
-        String sql = "SELECT * FROM operinfo WHERE operName = ?";
+    public void LoginByIdentity() {
+        System.out.println("请输入操作员名称：");
+        String inputName = InputLimit.InputString();
 
-        OperatorInfo operinfo = doQueryOneData(sql, inputName);
-        if (operinfo!=null) {
-            String operPwd = operinfo.getOperPwd();
-            if (operPwd.equals(inputPwd)) {
+        String sql = "SELECT * FROM operinfo WHERE operName = ?";
+        OperatorInfo operaInfo = doQueryOneData(sql, inputName);
+        if (operaInfo==null) {
+            InputLimit.Warn("登录失败，该操作员不存在！");
+        } else {
+            System.out.println("请输入登录密码：");
+            String inputPwd = InputLimit.InputString();
+
+            String operaPwd = operaInfo.getOperPwd();
+            if (operaPwd.equals(inputPwd)) {
                 InputLimit.Notice("登录成功!");
                 // 登录日志
                 new LogService().ALL("操作员[" + inputName + "]登录系统");
@@ -26,8 +33,6 @@ public class LoginByOperator extends BaseDAO<OperatorInfo> implements Identity {
             } else {
                 InputLimit.Warn("登录失败，密码输入错误！");
             }
-        } else {
-            InputLimit.Warn("登录失败，该操作员不存在！");
         }
     }
 }

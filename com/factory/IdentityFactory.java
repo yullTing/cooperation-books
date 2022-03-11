@@ -5,10 +5,15 @@ import com.implement.Identity;
 
 public class IdentityFactory {
 
-    public static Identity sureIdentity(String identity){
-        if (identity.equals("管理员")){
+    /**
+     * 确定用户身份选择执行对应的方法
+     * @param identity 用户的选择：1或者2
+     * @return 执行对应的登录方法
+     */
+    public static Identity sureIdentity(char identity){
+        if (identity == '1'){
             return new LoginByAdmin();
-        } else if (identity.equals("操作员")){
+        } else if (identity == '2'){
             return new LoginByOperator();
         } else {
             return null;

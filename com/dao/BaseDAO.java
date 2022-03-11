@@ -88,7 +88,8 @@ public abstract class BaseDAO<T> {
     /*
     * 用于查询特殊值的通用的方法，如查询总行数
     * */
-    /*public <E> E doQuerySpecialValue(String sql, Object... args){
+    public <E> E doQuerySpecialValue(String sql, Object... args){
+        E result = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -98,19 +99,21 @@ public abstract class BaseDAO<T> {
             }
             try {
                 rs = ps.executeQuery();
+                if(rs.next()){
+                    //return (E) rs.getObject(1);
+                    result = (E) rs.getObject(1);
+                }
             } catch (MySQLSyntaxErrorException e){
                 InputLimit.Warn("");
-            }
-            if(rs.next()){
-                return (E) rs.getObject(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
             JDBCUtils.CloseResources(null, ps, rs);
         }
-        return null;
-    }*/
+        //return null;
+        return result;
+    }
 
 
     /* @Override

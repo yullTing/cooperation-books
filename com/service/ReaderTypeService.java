@@ -22,7 +22,13 @@ public class ReaderTypeService {
             String readerType = TSUtility.readKeyBoard(20, false);
             boolean check = daoReaderType.HasBookTypeName(readerType);
             if (check) {
-                daoReaderType.AddReaderType(s, readerType);
+                System.out.println("请输入最多借阅数量：");
+                int maxBorrowNum = InputLimit.InputNumber();
+
+                System.out.println("请输入最多借书天数");
+                int limitDays = InputLimit.InputNumber();
+
+                daoReaderType.AddReaderType(s, readerType, maxBorrowNum, limitDays);
                 flag = false;
             } else {
                 InputLimit.Warn("存在该读者类型名称！请重新输入！");
@@ -32,6 +38,7 @@ public class ReaderTypeService {
     }
 
     public void DReaderType(String s) {
+        daoReaderType.QueryBookType();
         boolean flag = true;
         while (flag) {
             System.out.println("请输入你要删除的读者类型名称:");
@@ -48,6 +55,7 @@ public class ReaderTypeService {
     }
 
     public void MReaderType(String s) {
+        daoReaderType.QueryBookType();
         boolean flag = true;
         while (flag) {
             System.out.println("请输入你要修改的读者类型的编号:");
@@ -62,10 +70,10 @@ public class ReaderTypeService {
                     System.out.println("请输入新的读者类型名称（" + readerType.getTypename() + "）:");
                     String type = InputLimit.ModifyString(readerType.getTypename());
 
-                    System.out.println("输入新的最大借阅数量（" + readerType.getMaxborrownum() + "）:");
+                    System.out.println("输入新的最多借阅数量（" + readerType.getMaxborrownum() + "）:");
                     int maxNum = InputLimit.ModifyInt(readerType.getBorrowMoney());
 
-                    System.out.println("输入新的最大借阅天数（" + readerType.getLimit() + "）:");
+                    System.out.println("输入新的最多借阅天数（" + readerType.getLimit() + "）:");
                     int limit = InputLimit.ModifyInt(readerType.getLimit());
 
                     daoReaderType.ModifyReaderType(s, type, maxNum, limit, readInt);

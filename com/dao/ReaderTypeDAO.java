@@ -24,11 +24,11 @@ public class ReaderTypeDAO extends BaseDAO<ReaderType> implements ReaderTypeImpl
     }
 
     @Override
-    public void AddReaderType(String s, String readerType) {
-        String sql1 = "INSERT INTO readertype VALUES(NULL, ?, 30, 7, 10, 200)";
-        doUpdate(sql1, readerType);
+    public void AddReaderType(String s, String readerTypeName, int maxBorrowNum, int limitDays) {
+        String sql1 = "INSERT INTO readertype VALUES(NULL, ?, ?, ?, 10, 200)";
+        doUpdate(sql1, readerTypeName, maxBorrowNum, limitDays);
         InputLimit.Notice("添加成功！");
-        new LogService().AOL("操作员[" + s + "]添加读者类型" + readerType);
+        new LogService().AOL("操作员[" + s + "]添加读者类型" + readerTypeName);
     }
 
     @Override
@@ -97,6 +97,7 @@ public class ReaderTypeDAO extends BaseDAO<ReaderType> implements ReaderTypeImpl
         String sql = "select * from readertype";
         penaltyInfo = doQueryResultList(sql);
 
+        System.out.println("编号 \t\t 读者类别名称 \t\t 逾期罚金");
         for (ReaderType penalty : penaltyInfo){
             System.out.println(penalty.getId() + "\t\t " + penalty.getTypename() + "\t\t " + penalty.getPenalMoney());
         }

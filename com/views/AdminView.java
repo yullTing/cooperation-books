@@ -25,7 +25,7 @@ public class AdminView {
                     new BorrowMoneyService().BorrowMoney(s);
                     break;
                 case '3':
-                    OperManageView(s);
+                    OperaManageView(s);
                     break;
                 case '4':
                     new PenalBillService().QPP(s);
@@ -45,7 +45,7 @@ public class AdminView {
 
 
     //3. 员工信息管理
-    public static void OperManageView(String s) {
+    public static void OperaManageView(String s) {
         boolean flagOM = true;
         while (flagOM) {
             InputLimit.BlueFont("********* 员工信息管理 *********");
@@ -57,13 +57,13 @@ public class AdminView {
             char cOM = InputLimit.InputMenuFive();
             switch (cOM) {
                 case '1':
-                    new OperatorManageService().AddOperService(s);
+                    new OperatorManageService().AddOperaService(s);
                     break;
                 case '2':
-                    new OperatorManageService().QueryOperService();
+                    new OperatorManageService().QueryOperaService();
                     break;
                 case '3':
-                    new OperatorManageService().UpdateOperService(s);
+                    new OperatorManageService().UpdateOperaService(s);
                     break;
                 case '4':
                    new OperatorManageService().DeleteOperService(s);

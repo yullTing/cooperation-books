@@ -1,5 +1,6 @@
 package com.service;
 
+import com.dao.AdminInfoDAO;
 import com.dao.OperatorManageDAO;
 import com.entity.AdminInfo;
 import com.entity.OperatorInfo;
@@ -12,47 +13,49 @@ import java.util.ArrayList;
  * */
 public class OperatorManageService {
 
-    private final OperatorManageDAO daoOperManage = new OperatorManageDAO();
+    private final OperatorManageDAO daoOperaManage = new OperatorManageDAO();
 
-    public void AddOperService(String s) {
+    public void AddOperaService(String s) {
         InputLimit.BlueFont("请输入员工名称：");
-        String operName = InputLimit.InputString();
+        String operaName = InputLimit.InputString();
         InputLimit.BlueFont("请输入登录密码：");
-        String operPwd = InputLimit.InputString();
+        String operaPwd = InputLimit.InputString();
         /*System.out.println("请确认登录密码：");
         String surePwd = InputLimit.InputString();*/
-        daoOperManage.AddOper(operName, operPwd, s);
+        daoOperaManage.AddOpera(operaName, operaPwd, s);
     }
 
-    public void QueryOperService() {
-        daoOperManage.QueryOper();
+    public void QueryOperaService() {
+        daoOperaManage.QueryOpera();
     }
 
-    public void UpdateOperService(String s) {
-        ArrayList<OperatorInfo> operinfos = daoOperManage.QueryOper();
-        if (operinfos!=null) {//存在操作员信息
+    public void UpdateOperaService(String s) {
+        ArrayList<OperatorInfo> operaInfos = daoOperaManage.QueryOpera();
+        if (operaInfos!=null) {//存在操作员信息
             for (; ;) {//该循环用来确保输入的编号正确且存在
                 InputLimit.BlueFont("请输入列表左侧的编号：");
-                int id = InputLimit.InputNumber();
-                OperatorInfo operinfo = daoOperManage.QueryOperById(id);
-                if (operinfo == null) {
+                int operaId = InputLimit.InputNumber();
+                OperatorInfo operaInfo = daoOperaManage.QueryOperaById(operaId);
+                if (operaInfo == null) {
                     InputLimit.Warn("编号输入错误！");
                 } else {
-                    InputLimit.BlueFont("修改员工名称（" + operinfo.getOperName() + "）：");
-                    String operNamee = InputLimit.ModifyString(operinfo.getOperName());
+                    InputLimit.BlueFont("修改员工名称（" + operaInfo.getOperName() + "）：");
+                    String operaNamee = InputLimit.ModifyString(operaInfo.getOperName());
                     InputLimit.BlueFont("修改员工密码(******)：");
-                    String operPwdd = InputLimit.ModifyString(operinfo.getOperPwd());
+                    String operaPwdd = InputLimit.ModifyString(operaInfo.getOperPwd());
 
-                    new UserInfoService().QueryAllAdmin(); //查询所有管理员
+                    //new UserInfoService().QueryAllAdmin(); //查询所有管理员
+                    new AdminInfoDAO().AllAdmin();
                     for (; ;) {//该循环用来确保输入的管理员Id正确且存在
-                        InputLimit.BlueFont("修改所属管理员Id（" + operinfo.getAdminId() + "）：");
-                        int adminId = InputLimit.ModifyInt(operinfo.getAdminId());
+                        InputLimit.BlueFont("修改所属管理员Id（" + operaInfo.getAdminId() + "）：");
+                        int adminId = InputLimit.ModifyInt(operaInfo.getAdminId());
 
-                        AdminInfo admininfo = new UserInfoService().QueryAdminById(adminId);
-                        if (admininfo==null){
+                        //AdminInfo adminInfo = new UserInfoService().QueryAdminById(adminId);
+                        AdminInfo adminInfo = new AdminInfoDAO().AllAdminById(adminId);
+                        if (adminInfo==null){
                             InputLimit.Warn("管理员Id输入错误！");
                         } else {
-                            daoOperManage.UpdateOper(id, operNamee, operPwdd, adminId, s);
+                            daoOperaManage.UpdateOpera(operaId, operaNamee, operaPwdd, adminId, s);
                             break;
                         }
                     }
@@ -63,22 +66,22 @@ public class OperatorManageService {
     }
 
     public void DeleteOperService(String s){
-        ArrayList<OperatorInfo> operinfos1 = daoOperManage.QueryOper();
-        if (operinfos1 == null) {
+        ArrayList<OperatorInfo> operaInfos = daoOperaManage.QueryOpera();
+        if (operaInfos == null) {
             InputLimit.Warn("目前没有任何操作员信息，无法进行删除操作！");
         } else {
             InputLimit.BlueFont("请输入列表左侧的编号：");
             int idDelete = InputLimit.InputNumber();
             //查询该编号下是否存在操作员信息
-            OperatorInfo operinfo = daoOperManage.QueryOperById(idDelete);
-            if (operinfo != null) {
-                InputLimit.BlueFont(operinfo.toString());
-                String delOperName = operinfo.getOperName();
+            OperatorInfo opera = daoOperaManage.QueryOperaById(idDelete);
+            if (opera != null) {
+                InputLimit.BlueFont(opera.toString());
+                String delOperName = opera.getOperName();
                 InputLimit.Warn("请确认是否删除该操作员？（Y/N）");
                 char ynDO = InputLimit.InputChoice();
                 if (ynDO == 'Y') {
                     //确定删除
-                    daoOperManage.DeleteOper(idDelete, delOperName, s);
+                    daoOperaManage.DeleteOpera(idDelete, delOperName, s);
                 }
             } else {
                 InputLimit.Warn("操作员编号输入错误！");

@@ -1,5 +1,9 @@
 package com.implement;
 
 public interface Identity {
-    void LoginByIdentity(String s1, String s2);
+
+    /**
+     * 根据用户身份登录系统
+     */
+    void LoginByIdentity();
 }
